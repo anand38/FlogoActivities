@@ -5,9 +5,7 @@ import (
 	"net/http"
 	"fmt"
 	"io/ioutil"
-	"github.com/tidwall/gjson"
-	"strconv"
-	"github.com/tidwall/sjson"
+	"github.com/anand38/FlogoActivities/smartsheetLogic"
 )
 
 // MyActivity is a stub for your Activity implementation
@@ -47,6 +45,8 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 					fmt.Print("Error Occurred: ",err_resp)
 				}else {
 					sheetData,_:=ioutil.ReadAll(success_resp.Body)
+
+					/*
 					columns:=gjson.Get(string(sheetData),"columns")
 					columnLength,_:=strconv.Atoi(gjson.Get(columns.String(),"#").String())
 					var col=make([]string,columnLength)
@@ -63,6 +63,11 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 						}
 					}
 					activityOutput=activityOutputTmp
+
+					*/
+					activityOutput=
+
+
 					fmt.Println(activityOutput)
 					
 				}
