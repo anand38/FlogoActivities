@@ -2,6 +2,7 @@
   "name": "smartSheet",
   "version": "0.0.1",
   "type": "flogo:activity",
+  "ref":"github.com/anand38/FlogoActivities/Activities/smartsheet",
   "description": "Get the sheet details from SmartSheet",
   "author": "Team LetsFlogo",
   "inputs":[
