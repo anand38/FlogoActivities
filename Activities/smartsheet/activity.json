@@ -1,0 +1,23 @@
+{
+  "name": "smartSheet",
+  "version": "0.0.1",
+  "type": "flogo:activity",
+  "description": "Get the sheet details from SmartSheet",
+  "author": "Team LetsFlogo",
+  "inputs":[
+    {
+      "name": "Sheet_ID",
+      "type": "string"
+    },
+    {
+      "name":"Access_Token",
+      "type":"string"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Response_Json",
+      "type": "string"
+    }
+  ]
+}
