@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"fmt"
 	"io/ioutil"
-	"github.com/anand38/FlogoActivities/smartsheetLogic"
+	"github.com/anand38/FlogoActivities/smartsheetcode"
 )
 
 // MyActivity is a stub for your Activity implementation
