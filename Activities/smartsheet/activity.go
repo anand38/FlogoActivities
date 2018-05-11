@@ -64,8 +64,10 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 					}
 					activityOutput=activityOutputTmp
 					fmt.Println(activityOutput)
+					
 				}
 			}
+	context.SetOutput("Response_Json", activityOutput)
 	return true, nil
 	}
 
