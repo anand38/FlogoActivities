@@ -6,7 +6,7 @@ import (
 	"github.com/tidwall/sjson"
 )
 
-func setSheetDetails(sheetData string)string{
+func SetSheetDetails(sheetData string)string{
 	activityOutput:=""
 	columns:=gjson.Get(string(sheetData),"columns")
 	columnLength,_:=strconv.Atoi(gjson.Get(columns.String(),"#").String())
