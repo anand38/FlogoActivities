@@ -45,15 +45,43 @@ func TestEval(t *testing.T) {
 		}
 	}()
 
-	act := NewActivity(getActivityMetadata())
-	tc := test.NewTestActivityContext(getActivityMetadata())
 
-	//setup attrs
-	tc.SetInput("Sheet_ID","681368645592964")
-	tc.SetInput("Access_Token","y3ht4k57vq57974zvtsst362pn")
-	act.Eval(tc)
-	result1 := tc.GetOutput("Response_Json")
-	assert.Equal(t, result1, result1)
+
+
+	{
+		act := NewActivity(getActivityMetadata())
+		tc := test.NewTestActivityContext(getActivityMetadata())
+		//setup attrs
+		tc.SetInput("Sheet_ID","6813686455787892964")
+		tc.SetInput("Access_Token","y3ht4k57vq57974zvtsst362pn")
+		act.Eval(tc)
+		result1 := tc.GetOutput("Response_Json")
+		assert.Equal(t, result1, result1)
+
+	}
+	{
+		act := NewActivity(getActivityMetadata())
+		tc := test.NewTestActivityContext(getActivityMetadata())
+		//setup attrs
+		tc.SetInput("Sheet_ID","681368645592964")
+		tc.SetInput("Access_Token","y3ht4k57vqjgjhgjhgsdf57974zvtsst362pn")
+		act.Eval(tc)
+		result1 := tc.GetOutput("Response_Json")
+		assert.Equal(t, result1, result1)
+
+	}
+	{
+		act := NewActivity(getActivityMetadata())
+		tc := test.NewTestActivityContext(getActivityMetadata())
+		//setup attrs
+		tc.SetInput("Sheet_ID","681368645592964")
+		tc.SetInput("Access_Token","y3ht4k57vq57974zvtsst362pn")
+		act.Eval(tc)
+		result1 := tc.GetOutput("Response_Json")
+		assert.Equal(t, result1, result1)
+
+	}
+
 
 	//check result attr
 }

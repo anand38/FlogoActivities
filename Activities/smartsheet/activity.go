@@ -3,10 +3,11 @@ package smartsheet
 import (
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
 	"net/http"
-	"fmt"
 	"io/ioutil"
 	"github.com/anand38/FlogoActivities/smartsheetcode"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
+	"errors"
+	"github.com/tidwall/gjson"
 )
 
 // MyActivity is a stub for your Activity implementation
@@ -28,11 +29,11 @@ func (a *MyActivity) Metadata() *activity.Metadata {
 func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 
 	// do eval
-	logger.Debug("Started execution....")	//accessToken:="y3ht4k57vq57974zvtsst362pn"
+	logger.Debug("Started execution....")
 	accessToken:=context.GetInput("Access_Token").(string)
 	sheetId:=context.GetInput("Sheet_ID").(string)
 	activityOutput:=""
-
+	errReturn:=""
 
 			sheetUrl:="https://api.smartsheet.com/2.0/sheets/"+sheetId
 			{
@@ -42,12 +43,22 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 				cl := &http.Client{}
 				success_resp,err_resp := cl.Do(req)
 				if err_resp !=nil{
-					fmt.Print("Error Occurred: ",err_resp)
+					errReturn="The HTTP request failed while getting sheet details..."
+					//fmt.Print("Error Occurred: ",err_resp.Error())
 					logger.Debug("Some error occurred")
+					return false,errors.New(errReturn)
 				}else {
 					sheetData,_:=ioutil.ReadAll(success_resp.Body)
+					logger.Debug(sheetData)
+					//fmt.Println(string(sheetData))
+					errCode:=gjson.Get(string(sheetData),"errorCode")
+					if(errCode.Exists()){
+						errMessage:=gjson.Get(string(sheetData),"message")
+						logger.Debug(errMessage)
+						//fmt.Println(errMessage)
+					}
 					activityOutput=smartsheetcode.SetSheetDetails(string(sheetData))
-					fmt.Println(activityOutput)
+					//fmt.Println(activityOutput)
 					logger.Debug(activityOutput)
 				}
 			}
