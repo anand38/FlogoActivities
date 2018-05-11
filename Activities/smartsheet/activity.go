@@ -8,7 +8,11 @@ import (
 	"github.com/TIBCOSoftware/flogo-lib/logger"
 	"errors"
 	"github.com/tidwall/gjson"
+	"fmt"
 )
+
+// ActivityLog is the default logger for the Log Activity
+var activityLog = logger.GetLogger("activity-flogo-SmartSheet-getSheetDetails")
 
 // MyActivity is a stub for your Activity implementation
 type MyActivity struct {
@@ -45,7 +49,7 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 				if err_resp !=nil{
 					errReturn="The HTTP request failed while getting sheet details..."
 					//fmt.Print("Error Occurred: ",err_resp.Error())
-					logger.Debug("Some error occurred")
+					activityLog.Errorf("some error occurred while trying to fetch sheet details...")
 					return false,errors.New(errReturn)
 				}else {
 					sheetData,_:=ioutil.ReadAll(success_resp.Body)
@@ -53,9 +57,10 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 					//fmt.Println(string(sheetData))
 					errCode:=gjson.Get(string(sheetData),"errorCode")
 					if(errCode.Exists()){
-						errMessage:=gjson.Get(string(sheetData),"message")
-						logger.Debug(errMessage)
-						//fmt.Println(errMessage)
+						errMessage:=gjson.Get(string(sheetData),"message").String()
+						activityLog.Errorf(errMessage)
+						fmt.Println(errMessage)
+						return false,errors.New(errMessage)
 					}
 					activityOutput=smartsheetcode.SetSheetDetails(string(sheetData))
 					//fmt.Println(activityOutput)
