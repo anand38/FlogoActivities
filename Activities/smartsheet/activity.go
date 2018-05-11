@@ -33,7 +33,7 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 	//accessToken:="y3ht4k57vq57974zvtsst362pn"
 	accessToken:=context.GetInput("Access_Token").(string)
 	sheetId:=context.GetInput("Sheet_ID").(string)
-
+	activityOutput:=""
 
 
 			sheetUrl:="https://api.smartsheet.com/2.0/sheets/"+sheetId
@@ -55,7 +55,7 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 					}
 					rows := gjson.Get(string(sheetData),"rows.#.cells")
 					activityOutputTmp:=`{}`
-					activityOutput:=""
+					
 					for i,_ := range rows.Array(){
 						rowcell:= gjson.Get(rows.String(),strconv.Itoa(i)) ///single row
 						for tmp:=0;tmp<columnLength;tmp++  {
