@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"github.com/anand38/FlogoActivities/smartsheetcode"
+	"github.com/TIBCOSoftware/flogo-lib/logger"
 )
 
 // MyActivity is a stub for your Activity implementation
@@ -27,8 +28,7 @@ func (a *MyActivity) Metadata() *activity.Metadata {
 func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 
 	// do eval
-
-	//accessToken:="y3ht4k57vq57974zvtsst362pn"
+	logger.Debug("Started execution....")	//accessToken:="y3ht4k57vq57974zvtsst362pn"
 	accessToken:=context.GetInput("Access_Token").(string)
 	sheetId:=context.GetInput("Sheet_ID").(string)
 	activityOutput:=""
@@ -43,12 +43,15 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 				success_resp,err_resp := cl.Do(req)
 				if err_resp !=nil{
 					fmt.Print("Error Occurred: ",err_resp)
+					logger.Debug("Some error occurred")
 				}else {
 					sheetData,_:=ioutil.ReadAll(success_resp.Body)
 					activityOutput=smartsheetcode.SetSheetDetails(string(sheetData))
 					fmt.Println(activityOutput)
+					logger.Debug(activityOutput)
 				}
 			}
+
 	context.SetOutput("Response_Json", activityOutput)
 	return true, nil
 	}
