@@ -27,7 +27,7 @@ func (a *MyActivity) Metadata() *activity.Metadata {
 func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 
 	// do eval
-	logger.Debug("Started execution....")
+	
 	accessToken:=context.GetInput("Access_Token").(string)
 	sheetId:=context.GetInput("Sheet_ID").(string)
 	activityOutput:=""
