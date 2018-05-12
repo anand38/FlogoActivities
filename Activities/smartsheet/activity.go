@@ -2,7 +2,6 @@ package smartsheet
 
 import (
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
-	"github.com/TIBCOSoftware/flogo-lib/logger"
 	"github.com/anand38/FlogoActivities/smartsheetcode"
 )
 
