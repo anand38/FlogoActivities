@@ -28,15 +28,15 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 	// do eval
 	
 	accessToken:=context.GetInput("Access_Token").(string)
-	sheetId:=context.GetInput("Sheet_ID").(string)
-	activityOutput:=""
+	sheetID:=context.GetInput("Sheet_ID").(string)
 
-	activityOutput,err=smartsheetcode.GetSheetDetails(sheetId,accessToken)
+	result,err:=smartsheetcode.GetSheetDetails(sheetID,accessToken)
 	if err!=nil {
 		return false,err
-	}else{
-		context.SetOutput("Response_Json", activityOutput)
 	}
+
+	context.SetOutput("Response_Json", result)
+
 	return true, nil
 	}
 
