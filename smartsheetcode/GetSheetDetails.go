@@ -5,8 +5,10 @@ import (
 	"net/http"
 	"io/ioutil"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
+	"github.com/tidwall/sjson"
 	"errors"
 	"fmt"
+	"strconv"
 )
 
 //GetSheetDetails accepts sheedID,accessToken and returns sheet Details
@@ -15,7 +17,8 @@ func GetSheetDetails(sheetID string,accessToken string)(string,error){
 	var activityLog = logger.GetLogger("activity-flogo-SmartSheet-getSheetDetails")
 
 	errReturn:=""
-	data:=""
+	activityOutputTmp:=`{}`
+
 	sheetURL:="https://api.smartsheet.com/2.0/sheets/"+sheetID
 	{
 		req,_:=http.NewRequest("GET",sheetURL,nil)
@@ -39,8 +42,25 @@ func GetSheetDetails(sheetID string,accessToken string)(string,error){
 			fmt.Println(errMessage)
 			return "",errors.New(errMessage)
 		}
-		data=string(sheetData)
+
+
+		columns:=gjson.Get(string(sheetData),"columns")
+		columnLength,_:=strconv.Atoi(gjson.Get(columns.String(),"#").String())
+		var col=make([]string,columnLength)
+		for t:=0;t<columnLength;t++{
+			col[t]=gjson.Get(columns.String(),strconv.Itoa(t)+".title").String()
+		}
+		rows := gjson.Get(string(sheetData),"rows.#.cells")
+
+		for i,_ := range rows.Array(){
+			rowcell:= gjson.Get(rows.String(),strconv.Itoa(i)) ///single row
+			for tmp:=0;tmp<columnLength;tmp++  {
+				activityOutputTmp,_=sjson.Set(activityOutputTmp,"rows."+strconv.Itoa(i)+"."+col[tmp],gjson.Get(rowcell.String(),strconv.Itoa(tmp)+".value").String())
+			}
+		}
+
+
 	}
-	return data,nil
+	return activityOutputTmp,nil
 }
 
