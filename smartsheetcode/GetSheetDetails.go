@@ -50,7 +50,7 @@ func GetSheetDetails(sheetId string,accessToken string)(string,error){
 			errReturn="the HTTP request failed while getting sheet details"
 			//fmt.Print("Error Occurred: ",err_resp.Error())
 			activityLog.Errorf("some error occurred while trying to fetch sheet details...")
-			return _,errors.New(errReturn)
+			return "",errors.New(errReturn)
 		}
 		sheetData,_:=ioutil.ReadAll(success_resp.Body)
 		logger.Debug(sheetData)
@@ -60,10 +60,10 @@ func GetSheetDetails(sheetId string,accessToken string)(string,error){
 			errMessage:=gjson.Get(string(sheetData),"message").String()
 			activityLog.Errorf(errMessage)
 			fmt.Println(errMessage)
-			return _,errors.New(errMessage)
+			return "",errors.New(errMessage)
 		}
 		data=string(sheetData)
 	}
-	return data,_
+	return data,""
 }
 
