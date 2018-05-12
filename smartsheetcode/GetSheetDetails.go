@@ -9,27 +9,27 @@ import (
 	"fmt"
 )
 
-
-func GetSheetDetails(sheetId string,accessToken string)(string,error){
+//GetSheetDetails accepts sheedID,accessToken and returns sheet Details
+func GetSheetDetails(sheetID string,accessToken string)(string,error){
 	// ActivityLog is the default logger for the Log Activity
 	var activityLog = logger.GetLogger("activity-flogo-SmartSheet-getSheetDetails")
 
 	errReturn:=""
 	data:=""
-	sheetUrl:="https://api.smartsheet.com/2.0/sheets/"+sheetId
+	sheetURL:="https://api.smartsheet.com/2.0/sheets/"+sheetID
 	{
-		req,_:=http.NewRequest("GET",sheetUrl,nil)
+		req,_:=http.NewRequest("GET",sheetURL,nil)
 		req.Header.Set("Authorization","Bearer "+accessToken)
 		req.Header.Set("Content-Type","application/json")
 		cl := &http.Client{}
-		success_resp,err_resp := cl.Do(req)
-		if err_resp !=nil{
+		successResp,errResp := cl.Do(req)
+		if errResp !=nil{
 			errReturn="the HTTP request failed while getting sheet details"
 			//fmt.Print("Error Occurred: ",err_resp.Error())
 			activityLog.Errorf("some error occurred while trying to fetch sheet details...")
 			return "",errors.New(errReturn)
 		}
-		sheetData,_:=ioutil.ReadAll(success_resp.Body)
+		sheetData,_:=ioutil.ReadAll(successResp.Body)
 		logger.Debug(sheetData)
 		//fmt.Println(string(sheetData))
 		errCode:=gjson.Get(string(sheetData),"errorCode")
