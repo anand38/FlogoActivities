@@ -8,11 +8,13 @@
   "inputs":[
     {
       "name": "Sheet_ID",
-      "type": "string"
+      "type": "string",
+      "required":"true"
     },
     {
       "name":"Access_Token",
-      "type":"string"
+      "type":"string",
+      "required":"true"
     }
   ],
   "outputs": [
