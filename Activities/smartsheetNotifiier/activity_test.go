@@ -6,6 +6,7 @@ import (
 
 	"github.com/TIBCOSoftware/flogo-lib/core/activity"
 	"github.com/TIBCOSoftware/flogo-contrib/action/flow/test"
+	"github.com/stretchr/testify/assert"
 )
 
 var activityMetadata *activity.Metadata
@@ -48,8 +49,16 @@ func TestEval(t *testing.T) {
 	tc := test.NewTestActivityContext(getActivityMetadata())
 
 	//setup attrs
+	tc.SetInput("Sheet_ID","681368645592964")
+	tc.SetInput("Access_Token","nfg0w0cdq7mbzdnru6w2uvvh24")
+	tc.SetInput("Status","Complete")
+	tc.SetInput("Percent_Complete","100%")
+	tc.SetInput("Subject","Test Mail")
+	tc.SetInput("Message","Some Message")
 
 	act.Eval(tc)
+	result := tc.GetOutput("Response_Json")
+	assert.Equal(t, result, result)
 
 	//check result attr
 }

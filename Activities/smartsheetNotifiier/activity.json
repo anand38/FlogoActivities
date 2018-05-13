@@ -6,13 +6,56 @@
   "author": "Your Name <you.name@example.org>",
   "inputs":[
     {
-      "name": "input",
-      "type": "string"
+      "name": "Sheet_ID",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "Access_Token",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "Status",
+      "type": "string",
+      "allowed": [
+        "Not Started",
+        "In Progress",
+        "Complete"
+      ],
+      "value": "Not Started"
+    },
+    {
+      "name":"Percent_Complete",
+      "type": "string",
+      "allowed":[
+        "100%",
+        "90%",
+        "80%",
+        "70%",
+        "60%",
+        "50%",
+        "40%",
+        "30%",
+        "20%",
+        "10%"
+      ],
+      "value":"100%"
+    },
+    {
+      "name":"Subject",
+      "type":"string",
+      "required": true
+    },
+    {
+      "name":"Message",
+      "type":"string",
+      "required": true
     }
   ],
   "outputs": [
     {
-      "name": "output",
+      "name": "Response_Json",
       "type": "string"
     }
   ]
