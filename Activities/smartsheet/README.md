@@ -1,7 +1,7 @@
 
 # SmartSheet GetSheetDetails
 
-This activity allows you to get the SmartSheet Data for your sheet in a json format. It takes SheetID and access token as an input and gives all the data for that sheet in a compact json format, which can 
+This activity allows you to get the SmartSheet Data for your sheet in a json format. It takes SheetID and access token as an input and gives all the data for that sheet in a compact json format.
 
 ## Installation
 
