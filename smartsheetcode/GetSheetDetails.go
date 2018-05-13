@@ -7,6 +7,7 @@ import (
 	"github.com/tidwall/sjson"
 	"errors"
 	"strconv"
+	"time"
 )
 
 //GetSheetDetails accepts sheedID,accessToken and returns sheet Details
@@ -21,13 +22,16 @@ func GetSheetDetails(sheetID string,accessToken string)(string,error){
 		req,_:=http.NewRequest("GET",sheetURL,nil)
 		req.Header.Set("Authorization","Bearer "+accessToken)
 		req.Header.Set("Content-Type","application/json")
-		cl := &http.Client{}
+		cl := &http.Client{
+			Timeout: time.Second * 30,
+		}
 		successResp,errResp := cl.Do(req)
 		if errResp !=nil{
 			errReturn="the HTTP request failed while getting sheet details"
 			//fmt.Print("Error Occurred: ",err_resp.Error())
 			return "",errors.New(errReturn)
 		}
+		defer successResp.Body.Close()
 		sheetData,_:=ioutil.ReadAll(successResp.Body)
 		//fmt.Println(string(sheetData))
 		errCode:=gjson.Get(string(sheetData),"errorCode")
