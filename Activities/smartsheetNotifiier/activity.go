@@ -61,9 +61,11 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 	if status !="" {
 
 		rows := gjson.Get(sheetdata, "rows")
+		count:=0
 		for i := range rows.Array() {
 			if gjson.Get(rows.String(), strconv.Itoa(i)+".Status").String() == status {
-				output, _ = sjson.Set(output, "sendTo."+strconv.Itoa(i)+".email", gjson.Get(rows.String(), strconv.Itoa(i)+".Assigned To").String())
+				output, _ = sjson.Set(output, "sendTo."+strconv.Itoa(count)+".email", gjson.Get(rows.String(), strconv.Itoa(count)+".Assigned To").String())
+				count++
 			}
 		}
 		fmt.Println("string1: ",output)
