@@ -111,6 +111,6 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 		defer successResp.Body.Close()
 		mailResp,_:=ioutil.ReadAll(successResp.Body)
 		fmt.Println("Output:" ,string(mailResp))
-
+		context.SetOutput("Response_Json",string(mailResp))
 	return true, nil
 }
