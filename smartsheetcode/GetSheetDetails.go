@@ -10,9 +10,8 @@ import (
 	"time"
 )
 
-//GetSheetDetails accepts sheedID,accessToken and returns sheet Details
+//GetSheetDetails accepts sheetID, accessToken and returns data of that sheetID
 func GetSheetDetails(sheetID string,accessToken string)(string,error){
-	// ActivityLog is the default logger for the Log Activity
 
 	errReturn:=""
 	activityOutputTmp:=`{}`
@@ -25,22 +24,21 @@ func GetSheetDetails(sheetID string,accessToken string)(string,error){
 		cl := &http.Client{
 			Timeout: time.Second * 30,
 		}
-		successResp,errResp := cl.Do(req)
+		successResp,errResp := cl.Do(req)  //call to Smartsheet API
 		if errResp !=nil{
-			errReturn="the HTTP request failed while getting sheet details"
-			//fmt.Print("Error Occurred: ",err_resp.Error())
+			//set error return
+			errReturn="the HTTP request failed while getting sheet details:"+errResp.Error()
 			return "",errors.New(errReturn)
 		}
+		// Close http connection
 		defer successResp.Body.Close()
+
 		sheetData,_:=ioutil.ReadAll(successResp.Body)
-		//fmt.Println(string(sheetData))
 		errCode:=gjson.Get(string(sheetData),"errorCode")
-		if(errCode.Exists()){
+		if errCode.Exists(){
 			errMessage:=gjson.Get(string(sheetData),"message").String()
-			//fmt.Println(errMessage)
 			return "",errors.New(errMessage)
 		}
-
 
 		columns:=gjson.Get(string(sheetData),"columns")
 		columnLength,_:=strconv.Atoi(gjson.Get(columns.String(),"#").String())
@@ -50,8 +48,9 @@ func GetSheetDetails(sheetID string,accessToken string)(string,error){
 		}
 		rows := gjson.Get(string(sheetData),"rows.#.cells")
 
+		//creating json for output
 		for i:= range rows.Array(){
-			rowcell:= gjson.Get(rows.String(),strconv.Itoa(i)) ///single row
+			rowcell:= gjson.Get(rows.String(),strconv.Itoa(i)) //single row
 			for tmp:=0;tmp<columnLength;tmp++  {
 				activityOutputTmp,_=sjson.Set(activityOutputTmp,"rows."+strconv.Itoa(i)+"."+col[tmp],gjson.Get(rowcell.String(),strconv.Itoa(tmp)+".value").String())
 			}
