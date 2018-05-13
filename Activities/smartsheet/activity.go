@@ -9,13 +9,6 @@ import (
 // ActivityLog is the default logger for the Log Activity
 var activityLog = logger.GetLogger("activity-flogo-SmartSheet-getSheetDetails")
 
-const
-(
-	Access_Token = "accessToken"
-	Sheet_ID = "sheetID"
-	Response_Json = "result"
-)
-
 
 // MyActivity is a stub for your Activity implementation
 type MyActivity struct {
@@ -37,16 +30,15 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 
 	// do eval
 	
-	accessToken:=context.GetInput(Access_Token).(string)
-	sheetID:=context.GetInput(Sheet_ID).(string)
+	accessToken:=context.GetInput("Access_Token").(string)
+	sheetID:=context.GetInput("Sheet_ID").(string)
 
 	result,err:=smartsheetcode.GetSheetDetails(sheetID,accessToken)
 	if err!=nil {
-		activityLog.Errorf(err.Error())
+		activityLog.Errorf("Error occurred:"+err.Error())
 		return false,err
 	}
-
-	context.SetOutput(Response_Json, result)
+	context.SetOutput("Response_Json", result)
 
 	return true, nil
 	}
