@@ -23,35 +23,42 @@ func GetSheetDetails(sheetID string,accessToken string)(string,error){
 		req.Header.Set("Content-Type","application/json")
 		cl := &http.Client{}
 		successResp,errResp := cl.Do(req)
+
+		if successResp.StatusCode == 200 {
+			sheetData,_:=ioutil.ReadAll(successResp.Body)
+			//fmt.Println(string(sheetData))
+			errCode:=gjson.Get(string(sheetData),"errorCode")
+			if(errCode.Exists()){
+				errMessage:=gjson.Get(string(sheetData),"message").String()
+				//fmt.Println(errMessage)
+				return "",errors.New(errMessage)
+			}
+
+
+			columns:=gjson.Get(string(sheetData),"columns")
+			columnLength,_:=strconv.Atoi(gjson.Get(columns.String(),"#").String())
+			var col=make([]string,columnLength)
+			for t:=0;t<columnLength;t++{
+				col[t]=gjson.Get(columns.String(),strconv.Itoa(t)+".title").String()
+			}
+			rows := gjson.Get(string(sheetData),"rows.#.cells")
+
+			for i,_ := range rows.Array(){
+				rowcell:= gjson.Get(rows.String(),strconv.Itoa(i)) ///single row
+				for tmp:=0;tmp<columnLength;tmp++  {
+					activityOutputTmp,_=sjson.Set(activityOutputTmp,"rows."+strconv.Itoa(i)+"."+col[tmp],gjson.Get(rowcell.String(),strconv.Itoa(tmp)+".value").String())
+				}
+			}
+			successResp.Body.Close()
+			successResp=nil
+			cl=nil
+		}
 		if errResp !=nil{
 			errReturn="the HTTP request failed while getting sheet details"
 			//fmt.Print("Error Occurred: ",err_resp.Error())
 			return "",errors.New(errReturn)
 		}
-		sheetData,_:=ioutil.ReadAll(successResp.Body)
-		//fmt.Println(string(sheetData))
-		errCode:=gjson.Get(string(sheetData),"errorCode")
-		if(errCode.Exists()){
-			errMessage:=gjson.Get(string(sheetData),"message").String()
-			//fmt.Println(errMessage)
-			return "",errors.New(errMessage)
-		}
 
-
-		columns:=gjson.Get(string(sheetData),"columns")
-		columnLength,_:=strconv.Atoi(gjson.Get(columns.String(),"#").String())
-		var col=make([]string,columnLength)
-		for t:=0;t<columnLength;t++{
-			col[t]=gjson.Get(columns.String(),strconv.Itoa(t)+".title").String()
-		}
-		rows := gjson.Get(string(sheetData),"rows.#.cells")
-
-		for i:= range rows.Array(){
-			rowcell:= gjson.Get(rows.String(),strconv.Itoa(i)) ///single row
-			for tmp:=0;tmp<columnLength;tmp++  {
-				activityOutputTmp,_=sjson.Set(activityOutputTmp,"rows."+strconv.Itoa(i)+"."+col[tmp],gjson.Get(rowcell.String(),strconv.Itoa(tmp)+".value").String())
-			}
-		}
 
 
 	}
