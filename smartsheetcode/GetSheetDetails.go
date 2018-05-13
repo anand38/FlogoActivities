@@ -4,7 +4,6 @@ import (
 	"github.com/tidwall/gjson"
 	"net/http"
 	"io/ioutil"
-	"github.com/TIBCOSoftware/flogo-lib/logger"
 	"github.com/tidwall/sjson"
 	"errors"
 	"strconv"
@@ -29,7 +28,6 @@ func GetSheetDetails(sheetID string,accessToken string)(string,error){
 			return "",errors.New(errReturn)
 		}
 		sheetData,_:=ioutil.ReadAll(successResp.Body)
-		logger.Debug(sheetData)
 		//fmt.Println(string(sheetData))
 		errCode:=gjson.Get(string(sheetData),"errorCode")
 		if(errCode.Exists()){
