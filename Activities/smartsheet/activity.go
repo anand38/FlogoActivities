@@ -6,7 +6,6 @@ import (
 	"github.com/TIBCOSoftware/flogo-lib/logger"
 )
 
-// ActivityLog is the default logger for the Log Activity
 var activityLog = logger.GetLogger("activity-flogo-SmartSheet-getSheetDetails")
 
 
@@ -28,8 +27,8 @@ func (a *MyActivity) Metadata() *activity.Metadata {
 // Eval implements activity.Activity.Eval
 func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 
-	// do eval
-	
+
+	//variables initialized here
 	accessToken:=context.GetInput("Access_Token").(string)
 	sheetID:=context.GetInput("Sheet_ID").(string)
 
@@ -38,6 +37,8 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 		activityLog.Errorf("Error occurred:"+err.Error())
 		return false,err
 	}
+
+	//setting the output here
 	context.SetOutput("Response_Json", result)
 
 	return true, nil
