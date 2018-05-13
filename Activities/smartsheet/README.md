@@ -45,7 +45,7 @@ SJSON is a Go package that provides a very fast and simple way to set a value in
 
 | Name | Required | Type | Description |
 | ---- | -------- | ---- |------------ |
-| Access_Token | True | String | Access Token of your surveymonkey App |
+| Access_Token | True | String | Access Token of your Smartsheet Acount |
 | Sheet_ID  | True | String | ID of the Sheet |
 
 
