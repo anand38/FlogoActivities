@@ -46,42 +46,23 @@ func TestEval(t *testing.T) {
 	}()
 
 
+	//testCase 1
+	//setup attrs
+	act := NewActivity(getActivityMetadata())
+	tc := test.NewTestActivityContext(getActivityMetadata())
+	//setup attrs
+	tc.SetInput("Sheet_ID","681368645592964")
+	tc.SetInput("Access_Token","nfg0w0cdq7mbzdnru6w2uvvh24")
+	act.Eval(tc)
+	result1 := tc.GetOutput("Response_Json")
 
+	//Reading expected data from file
+	file, err := ioutil.ReadFile("D:\\SheetData.txt")
 
-	{
-		act := NewActivity(getActivityMetadata())
-		tc := test.NewTestActivityContext(getActivityMetadata())
-		//setup attrs
-		tc.SetInput("Sheet_ID","6813686455787892964")
-		tc.SetInput("Access_Token","nfg0w0cdq7mbzdnru6w2uvvh24")
-		act.Eval(tc)
-		result1 := tc.GetOutput("Response_Json")
-		assert.Equal(t, result1, result1)
-
-	}
-	{
-		act := NewActivity(getActivityMetadata())
-		tc := test.NewTestActivityContext(getActivityMetadata())
-		//setup attrs
-		tc.SetInput("Sheet_ID","681368645592964")
-		tc.SetInput("Access_Token","y3ht4k57vqjgjhgjhgsdf57974zvtsst362pn")
-		act.Eval(tc)
-		result1 := tc.GetOutput("Response_Json")
-		assert.Equal(t, result1, result1)
-
-	}
-	{
-		act := NewActivity(getActivityMetadata())
-		tc := test.NewTestActivityContext(getActivityMetadata())
-		//setup attrs
-		tc.SetInput("Sheet_ID","681368645592964")
-		tc.SetInput("Access_Token","nfg0w0cdq7mbzdnru6w2uvvh24")
-		act.Eval(tc)
-		result1 := tc.GetOutput("Response_Json")
-		assert.Equal(t, result1, result1)
-
+	if err!=nil {
+		assert.Equal(t,"",result1)
+	}else{
+		assert.Equal(t, string(file), result1)
 	}
 
-
-	//check result attr
 }
