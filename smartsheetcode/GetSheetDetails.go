@@ -11,6 +11,7 @@ import (
 
 //GetSheetDetails accepts sheedID,accessToken and returns sheet Details
 func GetSheetDetails(sheetID string,accessToken string)(string,error){
+	// ActivityLog is the default logger for the Log Activity
 
 	errReturn:=""
 	activityOutputTmp:=`{}`
@@ -33,7 +34,7 @@ func GetSheetDetails(sheetID string,accessToken string)(string,error){
 		if(errCode.Exists()){
 			errMessage:=gjson.Get(string(sheetData),"message").String()
 			//fmt.Println(errMessage)
-			return "",errors.New("Error occurred: "+errMessage)
+			return "",errors.New(errMessage)
 		}
 
 
@@ -46,7 +47,7 @@ func GetSheetDetails(sheetID string,accessToken string)(string,error){
 		rows := gjson.Get(string(sheetData),"rows.#.cells")
 
 		for i,_ := range rows.Array(){
-			rowcell:= gjson.Get(rows.String(),strconv.Itoa(i)) //single row
+			rowcell:= gjson.Get(rows.String(),strconv.Itoa(i)) ///single row
 			for tmp:=0;tmp<columnLength;tmp++  {
 				activityOutputTmp,_=sjson.Set(activityOutputTmp,"rows."+strconv.Itoa(i)+"."+col[tmp],gjson.Get(rowcell.String(),strconv.Itoa(tmp)+".value").String())
 			}
