@@ -46,7 +46,7 @@ func GetSheetDetails(sheetID string,accessToken string)(string,error){
 		}
 		rows := gjson.Get(string(sheetData),"rows.#.cells")
 
-		for i,_ := range rows.Array(){
+		for i:= range rows.Array(){
 			rowcell:= gjson.Get(rows.String(),strconv.Itoa(i)) ///single row
 			for tmp:=0;tmp<columnLength;tmp++  {
 				activityOutputTmp,_=sjson.Set(activityOutputTmp,"rows."+strconv.Itoa(i)+"."+col[tmp],gjson.Get(rowcell.String(),strconv.Itoa(tmp)+".value").String())
