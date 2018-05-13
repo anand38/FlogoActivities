@@ -51,8 +51,8 @@ func TestEval(t *testing.T) {
 	//setup attrs
 	tc.SetInput("Sheet_ID","681368645592964")
 	tc.SetInput("Access_Token","nfg0w0cdq7mbzdnru6w2uvvh24")
-	tc.SetInput("Status","Complete")
-	tc.SetInput("Percent_Complete","100%")
+	tc.SetInput("Status","")
+	tc.SetInput("Percent_Complete","80%")
 	tc.SetInput("Subject","Test Mail")
 	tc.SetInput("Message","Some Message")
 
