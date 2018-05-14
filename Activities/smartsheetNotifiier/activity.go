@@ -80,15 +80,11 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 			perCompdata,_:=strconv.Atoi(strSlice[0])
 			perCompjson=perCompjson*100
 			if perCompjson <= float64(perCompdata) {
-				fmt.Println("herer.......")
-				fmt.Println("Percompdata:",perCompdata)
-				fmt.Println("Percomjson:",perCompjson)
 				output, _ = sjson.Set(output, "sendTo."+strconv.Itoa(count)+".email", gjson.Get(rows.String(), strconv.Itoa(count)+".Assigned To").String())
 				count++
 			}
 
 		}
-		fmt.Println("string2: ",output)
 	}else{
 		activityLog.Errorf("Either status or Percent complete needs to be selected")
 		return false,nil
@@ -106,7 +102,6 @@ func (a *MyActivity) Eval(context activity.Context) (done bool, err error)  {
 		}
 		successResp,errResp := cl.Do(req)  //call to Smartsheet API
 		if errResp !=nil{
-
 			return false,nil
 		}
 		// Close http connection
