@@ -1,61 +1,52 @@
 package main
 
-import (
-	"fmt"
-	"github.com/project-flogo/core/activity"
-	"github.com/project-flogo/core/data/metadata"
-	"github.com/anand38/FlogoActivitiesLogic/MQTT"
-)
+import "github.com/project-flogo/core/data/coerce"
 
-func init() {
-	_ = activity.Register(&Activity{}) //activity.Register(&Activity{}, New) to create instances using factory method 'New'
+type Settings struct {
+	ASetting string `md:"aSetting"`
 }
 
-var activityMd = activity.ToMetadata(&Settings{}, &Input{}, &Output{})
+type Input struct {
+	URL string `md:"URL,required"`
+	ClientID string `md:"ClientID,required"`
+	Topic string `md:"Topic,required"`
 
-//New optional factory method, should be used if one activity instance per configuration is desired
-func New(ctx activity.InitContext) (activity.Activity, error) {
+}
+func (r *Input) FromMap(values map[string]interface{}) error {
+	strURLVal, _ := coerce.ToString(values["URL"])
+	strClientIDVal, _ := coerce.ToString(values["ClientID"])
+	strTopicVal, _ := coerce.ToString(values["Topic"])
+	r.URL = strURLVal
+	r.ClientID=strClientIDVal
+	r.Topic=strTopicVal
+	return nil
+}
+/*
+func (r *Input) FromMap(values map[string]interface{}) error {
+	strVal, _ := coerce.ToString(values["name"])
+	r.AnInput = strVal
+	return nil
+}
+ */
 
-	s := &Settings{}
-	err := metadata.MapToStruct(ctx.Settings(), s, true)
-	if err != nil {
-		return nil, err
+func (r *Input) ToMap() map[string]interface{} {
+	return map[string]interface{}{
+		"URL": r.URL,"ClientID":r.ClientID,"Topic":r.Topic,
 	}
-
-	ctx.Logger().Debugf("Setting: %s", s.ASetting)
-
-	act := &Activity{} //add aSetting to instance
-
-	return act, nil
 }
 
-// Activity is an sample Activity that can be used as a base to create a custom activity
-type Activity struct {
+type Output struct {
+	AnOutput string `md:"anOutput"`
 }
 
-// Metadata returns the activity's metadata
-func (a *Activity) Metadata() *activity.Metadata {
-	return activityMd
+func (o *Output) FromMap(values map[string]interface{}) error {
+	strVal, _ := coerce.ToString(values["anOutput"])
+	o.AnOutput = strVal
+	return nil
 }
 
-// Eval implements api.Activity.Eval - Logs the Message
-func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
-
-	input := &Input{}
-	err = ctx.GetInputObject(input)
-	if err != nil {
-		return true, err
+func (o *Output) ToMap() map[string]interface{} {
+	return map[string]interface{}{
+		"anOutput": o.AnOutput,
 	}
-
-	fmt.Print("URL: ",input.URL)
-	fmt.Print("Topic: ",input.Topic)
-	fmt.Print("ClientID: ",input.ClientID)
-	mqttTrigger.SubscribeToMQTTTopic(input.URL,input.ClientID,input.Topic)
-	output := &Output{AnOutput: "Hello test"}
-	err = ctx.SetOutputObject(output)
-	if err != nil {
-		return true, err
-	}
-
-	return true, nil
 }
