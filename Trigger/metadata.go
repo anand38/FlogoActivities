@@ -1,4 +1,4 @@
-package main
+package Trigger
 
 import "github.com/project-flogo/core/data/coerce"
 
