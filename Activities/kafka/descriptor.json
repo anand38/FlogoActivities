@@ -1,5 +1,5 @@
 {
-  "name": "sample-activity",
+  "name": "salutation activity",
   "type": "flogo:activity",
   "version": "0.0.1",
   "title": "Sample Activity",
