@@ -5,7 +5,6 @@
   "title": "MQTT Trigger",
   "description": "MQTT Trigger",
   "ref": "github.com/anand38/FlogoActivities/Trigger",
-  "homepage": "https://github.com/project-flogo/tree/master/examples/activity",
   "settings": [
     {
       "name": "aSetting",
