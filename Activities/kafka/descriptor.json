@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "title": "Sample Activity",
   "description": "Sample Activity",
+  "ref": "github.com/FlogoActivities/Activities/kafka",
   "homepage": "https://github.com/project-flogo/tree/master/examples/activity",
   "settings": [
     {
