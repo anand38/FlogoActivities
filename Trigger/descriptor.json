@@ -8,8 +8,7 @@
   "settings": [
     {
       "name": "aSetting",
-      "type": "string",
-      "required": true
+      "type": "string"
     }
   ],
   "input": [
