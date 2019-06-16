@@ -2,11 +2,10 @@ package MyTimerTrigger
 
 import (
 	"context"
-	"strconv"
-	"time"
 	"github.com/TIBCOSoftware/flogo-lib/core/trigger"
 	"github.com/TIBCOSoftware/flogo-lib/logger"
 	"github.com/carlescere/scheduler"
+	"strconv"
 )
 
 // Create a new logger
@@ -92,7 +91,7 @@ func (t *MyTrigger) scheduleJobEverySecond(tgrHandler *trigger.Handler, fn func(
 
 	log.Debug("Repeating seconds: ", interval)
 	// schedule repeating
-	timerJob, err := scheduler.Every(time.Duration(interval)).Seconds().Run(fn)
+	timerJob, err := scheduler.Every(interval).Seconds().Run(fn)
 	if err != nil {
 		log.Error("Error scheduleRepeating (repeat seconds) flo err: ", err.Error())
 	}
